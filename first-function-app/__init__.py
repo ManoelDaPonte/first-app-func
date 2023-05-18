@@ -16,9 +16,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             name = req_body.get('name')
 
     if name:
-        return func.HttpResponse(f"Hello, {name}. T'es trop BG putain.")
+        return func.HttpResponse(f"{name}. est trop jolie.")
     else:
         return func.HttpResponse(
-             "Hello, BG.",
+             "Tu pues le cacatoesse.",
              status_code=200
         )
