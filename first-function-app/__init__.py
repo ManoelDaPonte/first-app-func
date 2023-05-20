@@ -19,6 +19,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse(f"{name}. est trop jolie.")
     else:
         return func.HttpResponse(
-             "Tu pues le cacatoesse.",
+             "Tu pues le cacatoesse",
              status_code=200
         )
