@@ -1,24 +1,19 @@
 import logging
-
+import os
 import azure.functions as func
+import azure.cognitiveservices.speech as speechsdk
+from azure.cognitiveservices.speech import SpeechRecognizer, SpeechConfig, AudioConfig
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('Python HTTP trigger function processed a request.')
+    
+    speech_key = os.environ["SpeechSubscriptionKey"]
+    service_region = 'westeurope'
+    speech_config = SpeechConfig(subscription=speech_key, region=service_region)
+    speech_config.speech_recognition_language = "fr-FR" # set the language to French
+    audio_config = AudioConfig(filename=req.files['audio'].filename)
 
-    name = req.params.get('name')
-    if not name:
-        try:
-            req_body = req.get_json()
-        except ValueError:
-            pass
-        else:
-            name = req_body.get('name')
+    recognizer = SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
+    result = recognizer.recognize_once()
 
-    if name:
-        return func.HttpResponse(f"{name}. est trop jolie.")
-    else:
-        return func.HttpResponse(
-             "Tu pues le cacatoesse",
-             status_code=200
-        )
+    return func.HttpResponse(result.text)
